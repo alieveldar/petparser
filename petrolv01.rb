@@ -35,7 +35,9 @@ puts list
 xlsfile = ("./" + (list[0].to_s))
 puts xlsfile
 xlsx = Roo::Spreadsheet.open(xlsfile)
-puts xlsx
-xlsx =  xlsx.to_csv
-puts xlsx
-
+xlsx.parse(clean: true)
+puts xlsx.info
+puts xlsx.last_row
+puts xlsx.first_row
+puts xlsx.first_column
+puts xlsx.last_column
