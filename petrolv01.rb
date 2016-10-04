@@ -42,5 +42,5 @@ first_row = xlsx.first_row
 first_column = xlsx.first_column
 last_column = xlsx.last_column
 conn = PG::Connection.open(:dbname => 'fuelcost')
-res = conn.exec_params(' SELECT location FROM azsparse VALUES (KAZAN)')
+res = conn.exec_params("INSERT INTO azsparse VALUES ($1, $2, $3, $4)", ['pesduk', 'pezdenka', 'pezda4ok', 'folk'])
 puts res
