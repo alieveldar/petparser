@@ -1,14 +1,18 @@
+#FIRST TIME RUN THIS SCRIPT TWO TIMES!!! BECAUSE IN YOU FOLDER NOT ANY XLS FILE!!!
+
 require 'open-uri'
 require 'digest/md5'
 require 'roo'
 require 'pg'
 require 'zip'
 require 'roo-xls'
-download = open('http://locator.transitcard.ru/locator/web/v1/report/points?pointTypes=8&isStk=false&x1=-58.64249754650558&y1=-30.994994359375003&x2=81.09058618886175&y2=-174.784056859375&zoom=2&type=Xls')
+
+urltosave = "http://locator.transitcard.ru/locator/web/v1/report/points?pointTypes=8&isStk=false&x1=-58.64249754650558&y1=-30.994994359375003&x2=81.09058618886175&y2=-174.784056859375&zoom=2&type=Xls" #paste there your link from petrol locator
+download = open(urltosave)
 _cat = Dir.pwd
 name = Time.now
 name = name.to_s
-format = ".xls"
+format = ".xls" #the file format 
 fullname = name + format
 IO.copy_stream(download, fullname)
 puts 'OK Bomb have been planted'
@@ -46,7 +50,7 @@ puts 'последняя строчка = ' +  (last_row).to_s
 puts 'первая колонка равна = '  + (first_column).to_s
 puts 'последняя колонка равна =  ' + (last_column).to_s
 
-conn = PG::Connection.open(:dbname => 'fuelcost')
+conn = PG::Connection.open(:dbname => 'fuelcost') #basename
 #res = conn.exec_params("INSERT INTO azsparse VALUES ($1, $2, $3, $4)", ['i', 'm', 'very', 'bad'])
 #0puts res
 #puts xlsx 
@@ -54,9 +58,9 @@ conn = PG::Connection.open(:dbname => 'fuelcost')
 #sheet = xlsx.row(4)
 #puts sheet.length
 #puts sheet[4]
-countrow = last_row + 1 
-startrow = 1
-puts startrow
+countrow = last_row + 1 #number of cycles for reading and writing data
+startrow = 1 #number of first row in file xls
+puts startrow 
 countrow.times do  |startrow|
 	sheetrow = xlsx.row(startrow)
 	res = conn.exec_params("INSERT INTO azsparse VALUES ($1, $2, $3, $4)", [sheetrow[0], sheetrow[1], sheetrow[2], sheetrow[3]])
