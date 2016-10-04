@@ -37,7 +37,10 @@ puts xlsfile
 xlsx = Roo::Spreadsheet.open(xlsfile)
 xlsx.parse(clean: true)
 puts xlsx.info
-puts xlsx.last_row
-puts xlsx.first_row
-puts xlsx.first_column
-puts xlsx.last_column
+last_row = xlsx.last_row
+first_row = xlsx.first_row
+first_column = xlsx.first_column
+last_column = xlsx.last_column
+conn = PG::Connection.open(:dbname => 'fuelcost')
+res = conn.exec_params(' SELECT location FROM azsparse VALUES (KAZAN)')
+puts res
