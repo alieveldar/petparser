@@ -38,7 +38,7 @@ xlsx = Roo::Spreadsheet.open(xlsfile)
 xlsx.parse(clean: true)
 #puts xlsx.info
 last_row = xlsx.last_row
-first_row = xlsx.first_row
+first_row = xlsx.first_row + 2 #make 2 constant
 first_column = xlsx.first_column
 last_column = xlsx.last_column
 puts 'первая строчка = ' + (first_row).to_s
@@ -47,5 +47,19 @@ puts 'первая колонка равна = '  + (first_column).to_s
 puts 'последняя колонка равна =  ' + (last_column).to_s
 
 conn = PG::Connection.open(:dbname => 'fuelcost')
-res = conn.exec_params("INSERT INTO azsparse VALUES ($1, $2, $3, $4)", ['i', 'm', 'very', 'bad'])
-puts res
+#res = conn.exec_params("INSERT INTO azsparse VALUES ($1, $2, $3, $4)", ['i', 'm', 'very', 'bad'])
+#0puts res
+#puts xlsx 
+#puts (xlsx.row(4)).class
+#sheet = xlsx.row(4)
+#puts sheet.length
+#puts sheet[4]
+countrow = last_row + 1 
+startrow = 1
+puts startrow
+countrow.times do  |startrow|
+	sheetrow = xlsx.row(startrow)
+	res = conn.exec_params("INSERT INTO azsparse VALUES ($1, $2, $3, $4)", [sheetrow[0], sheetrow[1], sheetrow[2], sheetrow[3]])
+end
+
+
