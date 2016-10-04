@@ -36,11 +36,16 @@ xlsfile = ("./" + (list[0].to_s))
 puts xlsfile
 xlsx = Roo::Spreadsheet.open(xlsfile)
 xlsx.parse(clean: true)
-puts xlsx.info
+#puts xlsx.info
 last_row = xlsx.last_row
 first_row = xlsx.first_row
 first_column = xlsx.first_column
 last_column = xlsx.last_column
+puts 'первая строчка = ' + (first_row).to_s
+puts 'последняя строчка = ' +  (last_row).to_s
+puts 'первая колонка равна = '  + (first_column).to_s
+puts 'последняя колонка равна =  ' + (last_column).to_s
+
 conn = PG::Connection.open(:dbname => 'fuelcost')
-res = conn.exec_params("INSERT INTO azsparse VALUES ($1, $2, $3, $4)", ['pesduk', 'pezdenka', 'pezda4ok', 'folk'])
+res = conn.exec_params("INSERT INTO azsparse VALUES ($1, $2, $3, $4)", ['i', 'm', 'very', 'bad'])
 puts res
