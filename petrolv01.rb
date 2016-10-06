@@ -61,9 +61,10 @@ conn = PG::Connection.open(:dbname => 'fuelcost') #basename
 countrow = last_row + 1 #number of cycles for reading and writing data
 startrow = 1 #number of first row in file xls
 puts startrow 
-countrow.times do  |startrow|
+conn.transaction do #Transaction for fast bd adding
+	countrow.times do  |startrow|
 	sheetrow = xlsx.row(startrow)
 	res = conn.exec_params("INSERT INTO azsparse VALUES ($1, $2, $3, $4)", [sheetrow[0], sheetrow[1], sheetrow[2], sheetrow[3]])
 end
 
-
+end
